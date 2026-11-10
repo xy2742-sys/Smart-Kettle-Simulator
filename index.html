@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Kettle Simulator</title>
+<style>
+:root{color-scheme:light;--ink:#20272d;--muted:#68747e;--blue:#326c83;--pale:#eaf4f6;--gold:#f0b85b;--line:#d9e2e5;--white:#fff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(145deg,#f2f7f7,#e7eff1);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);display:grid;place-items:center;padding:28px}
+.app{width:min(980px,100%);background:var(--white);border:1px solid #e3e9eb;border-radius:28px;box-shadow:0 24px 70px #233f4b18;overflow:hidden}.top{padding:28px 36px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:.72rem;font-weight:800;color:var(--blue)}h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.1;margin:7px 0 8px;letter-spacing:-.04em}.sub{margin:0;color:var(--muted)}.badge{border-radius:999px;background:#f0f4f5;padding:9px 13px;font-size:.83rem;font-weight:750;white-space:nowrap}.main{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:10px 36px 30px}.panel{background:#f7fafb;border:1px solid var(--line);border-radius:22px;padding:24px}.panel h2{font-size:1rem;margin:0 0 16px}.visual{display:grid;place-items:center;min-height:300px;background:radial-gradient(ellipse at 50% 76%,#d9e9ec 0,transparent 58%);position:relative}.kettle{width:204px;height:230px;position:relative;transition:filter .3s}.body-k{position:absolute;bottom:8px;left:30px;width:142px;height:170px;border:7px solid #425e68;border-radius:35% 35% 28% 28% / 22% 22% 18% 18%;background:linear-gradient(90deg,#dcebed,#fff 43%,#e6f0f1);box-shadow:0 15px 24px #34545b20;overflow:hidden}.water{position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(#77c6d0,#4b9cab);border-top:1px solid #a7dadd}.temp{position:absolute;z-index:2;inset:50% 0 auto;text-align:center;transform:translateY(-50%);font-size:2.1rem;font-weight:800;letter-spacing:-.06em;color:#29444d}.unit{font-size:.9rem;letter-spacing:0}.handle{position:absolute;right:1px;top:58px;width:58px;height:94px;border:12px solid #425e68;border-left:0;border-radius:0 32px 32px 0}.spout{position:absolute;left:5px;top:53px;width:44px;height:50px;background:#eaf2f3;border:7px solid #425e68;border-right:0;clip-path:polygon(0 0,100% 30%,100% 75%,0 100%);border-radius:10px 0 0 10px}.lid{position:absolute;top:39px;left:51px;width:103px;height:21px;border:6px solid #425e68;border-radius:14px;background:#cadde0}.base{position:absolute;bottom:0;left:21px;width:165px;height:16px;background:#425e68;border-radius:50%}.steam{position:absolute;top:8px;left:79px;font-size:1.5rem;opacity:0;transition:opacity .3s;color:#89aeb4}.visual.heating .steam,.visual.warm .steam{opacity:.65;animation:float 1.5s infinite ease-in-out}.visual.heating .body-k{filter:drop-shadow(0 0 13px #efa94255)}@keyframes float{50%{transform:translateY(-8px);opacity:.25}}
+.readout{display:flex;justify-content:space-between;align-items:center;margin:0 0 14px}.state{font-weight:800;font-size:1.08rem}.detail{font-size:.87rem;color:var(--muted);margin-top:4px}.led{width:11px;height:11px;border-radius:50%;background:#a9b7bc;box-shadow:0 0 0 5px #a9b7bc22}.led.on{background:#e8a540;box-shadow:0 0 0 5px #e8a54022}.led.warm{background:#4aa18c;box-shadow:0 0 0 5px #4aa18c22}.meter{height:12px;background:#e4ecee;border-radius:20px;overflow:hidden;margin:18px 0 7px}.fill{height:100%;width:0;background:linear-gradient(90deg,#73bdc5,#efb45a);border-radius:20px;transition:width .45s}.scale{display:flex;justify-content:space-between;color:var(--muted);font-size:.75rem}.field{margin-top:22px}.field label{display:block;font-size:.85rem;font-weight:750;margin-bottom:9px}.choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.choice{border:1px solid var(--line);background:white;color:var(--ink);border-radius:12px;padding:11px 4px;font-weight:750;cursor:pointer}.choice:hover{border-color:#6fa1ac}.choice[aria-pressed="true"]{background:var(--pale);border:2px solid var(--blue);color:#245a70;padding:10px 3px}.actions{display:grid;grid-template-columns:1.15fr 1.15fr .8fr;gap:10px;margin-top:20px}.button{border:0;border-radius:13px;padding:13px 12px;font:inherit;font-weight:800;cursor:pointer;transition:transform .12s,opacity .2s}.button:active{transform:scale(.98)}.primary{background:var(--blue);color:white}.secondary{background:#e8eff1;color:#30464d}.button:disabled{opacity:.45;cursor:not-allowed}.note{margin:17px 0 0;padding:12px 14px;border-radius:12px;background:#fff7e9;color:#75582b;font-size:.83rem;min-height:44px}.foot{padding:0 36px 25px;color:var(--muted);font-size:.8rem}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:700px){body{padding:12px}.app{border-radius:20px}.top{padding:24px 22px 14px;display:block}.badge{display:inline-block;margin-top:12px}.main{grid-template-columns:1fr;padding:8px 18px 22px}.panel{padding:20px}.visual{min-height:260px}.foot{padding:0 22px 22px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top"><div><div class="eyebrow">Interactive Appliance Model</div><h1>Smart Kettle Simulator</h1><p class="sub">Choose a temperature and watch the kettle change state.</p></div><div class="badge">Model: 50–100°C</div></header>
+<div class="main">
+<section class="panel" aria-label="Kettle visualization"><h2>Kettle</h2><div class="visual" id="visual"><div class="kettle" aria-hidden="true"><div class="steam">〰　〰　〰</div><div class="spout"></div><div class="lid"></div><div class="body-k"><div class="water" id="water"></div><div class="temp"><span id="currentTemp">22</span><span class="unit">°C</span></div></div><div class="handle"></div><div class="base"></div></div></div></section>
+<section class="panel" aria-label="Kettle controls"><h2>Controls &amp; status</h2><div class="readout"><div><div class="state" id="state">Idle</div><div class="detail" id="detail">Ready to heat water</div></div><span class="led" id="led" aria-hidden="true"></span></div><div class="meter" role="progressbar" aria-label="Heating progress" aria-valuemin="22" aria-valuemax="100" aria-valuenow="22"><div class="fill" id="fill"></div></div><div class="scale"><span>22°C</span><span id="targetLabel">Target: 80°C</span></div>
+<div class="field"><label>Target Temperature</label><div class="choices" role="group" aria-label="Target temperature"><button class="choice" data-temp="50" aria-pressed="false">50°C</button><button class="choice" data-temp="80" aria-pressed="true">80°C</button><button class="choice" data-temp="90" aria-pressed="false">90°C</button><button class="choice" data-temp="100" aria-pressed="false">100°C</button></div></div>
+<div class="actions"><button class="button primary" id="start">Start Heating</button><button class="button secondary" id="pause" disabled>Pause &amp; Keep Warm</button><button class="button secondary" id="cancel" disabled>Cancel</button></div><p class="note" id="note" role="status" aria-live="polite">Select a target temperature, then start the kettle.</p></section>
+</div>
+<footer class="foot">Simulation runs faster than a real kettle. Keeping Warm gently reheats when the water cools below the target.</footer>
+</main>
+<script>
+(() => {
+  const MIN = 22;
+  const state = { current: MIN, target: 80, warmTarget: 80, mode: "Idle", timer: null };
+  const $ = (id) => document.getElementById(id);
+  const visual = $("visual"), currentTemp = $("currentTemp"), fill = $("fill");
+  const stateText = $("state"), detail = $("detail"), note = $("note"), led = $("led");
+  const start = $("start"), pause = $("pause"), cancel = $("cancel"), targetLabel = $("targetLabel");
+  const choices = [...document.querySelectorAll(".choice")];
+
+  function render() {
+    currentTemp.textContent = Math.round(state.current);
+    targetLabel.textContent = `Target: ${state.target}°C`;
+    fill.style.width = `${Math.max(0, Math.min(100, (state.current - MIN) / (100 - MIN) * 100))}%`;
+    stateText.textContent = state.mode;
+    visual.className = `visual ${state.mode === "Heating" ? "heating" : state.mode === "Keeping Warm" ? "warm" : ""}`;
+    led.className = `led ${state.mode === "Heating" ? "on" : state.mode === "Keeping Warm" ? "warm" : ""}`;
+    const details = { Idle: "Ready to heat water", Heating: `Heating to ${state.target}°C`, "Keeping Warm": `Maintaining ${Math.round(state.warmTarget)}°C`, Paused: "Heating paused", "Not Enough Water": "Add water before starting" };
+    detail.textContent = details[state.mode];
+    start.disabled = state.mode === "Heating" || state.mode === "Keeping Warm";
+    pause.disabled = state.mode !== "Heating";
+    cancel.disabled = state.mode === "Idle" || state.mode === "Not Enough Water";
+    document.querySelector("[role=progressbar]").setAttribute("aria-valuenow", Math.round(state.current));
+  }
+
+  choices.forEach(button => button.addEventListener("click", () => {
+    if (state.mode === "Heating" || state.mode === "Keeping Warm") return;
+    state.target = Number(button.dataset.temp);
+    choices.forEach(choice => choice.setAttribute("aria-pressed", String(choice === button)));
+    note.textContent = `Target set to ${state.target}°C.`;
+    render();
+  }));
+
+  start.addEventListener("click", () => {
+    if (state.current >= state.target) {
+      state.warmTarget = state.target;
+      state.mode = "Keeping Warm";
+      note.textContent = `Water is at ${state.target}°C. Keeping it warm.`;
+    } else {
+      state.mode = "Heating";
+      note.textContent = `Heating water to ${state.target}°C…`;
+      state.timer = setInterval(() => {
+        if (state.mode === "Heating") {
+          state.current = Math.min(state.target, state.current + 1);
+          if (state.current >= state.target) {
+            state.warmTarget = state.target;
+            state.mode = "Keeping Warm";
+            note.textContent = `Target reached. Keeping water warm at ${state.target}°C.`;
+          }
+        } else if (state.mode === "Keeping Warm") {
+          state.current = state.warmTarget;
+        }
+        render();
+      }, 160);
+    }
+    render();
+    if (state.mode === "Keeping Warm" && state.timer === null) {
+      state.timer = setInterval(() => { state.current = state.target; render(); }, 1000);
+    }
+  });
+
+  pause.addEventListener("click", () => {
+    if (state.mode !== "Heating") return;
+    state.warmTarget = state.current;
+    state.mode = "Keeping Warm";
+    note.textContent = `Heating paused. Keeping water warm at ${Math.round(state.warmTarget)}°C.`;
+    render();
+  });
+
+  cancel.addEventListener("click", () => {
+    clearInterval(state.timer); state.timer = null;
+    state.mode = "Idle"; state.current = MIN; state.warmTarget = state.target;
+    note.textContent = "Heating canceled. The kettle is back in standby.";
+    render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
