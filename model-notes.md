@@ -1,12 +1,12 @@
 # Smart Kettle Simulator — Model Notes
 
 ## What it models
-A simplified electric kettle that heats water to a user-selected target temperature, then maintains that temperature.
+A simplified electric kettle that heats water to a user-selected target temperature, then maintains a temperature.
 
 ## States
 - **Idle:** Waiting for the user to start heating.
 - **Heating:** Current temperature rises toward the selected target.
-- **Keeping Warm:** The target is reached, or the user pauses heating; the kettle maintains the current temperature.
+- **Keeping Warm:** The kettle maintains the current setpoint. This can be the selected target or the temperature reached when the user pauses.
 
 ## Inputs and transitions
 - Choose **50°C, 80°C, 90°C, or 100°C**: updates the target temperature while idle.
@@ -19,4 +19,4 @@ A simplified electric kettle that heats water to a user-selected target temperat
 `current` tracks current water temperature, `target` stores the selected temperature, `warmTarget` stores the temperature currently being maintained, and `mode` stores the current state. A timer advances the simulation and the interface redraws from those values.
 
 ## Simplifications
-The animation is accelerated. The water level stays visually fixed; only the temperature readout and progress bar change, so the animation does not imply that the amount of water is changing. Keeping Warm is represented by a small temperature dip followed by reheating, rather than a detailed thermostat or energy model.
+The simulation runs faster than a real kettle. The water level stays visually fixed; only the temperature readout and progress bar change. Keeping Warm holds the setpoint constant instead of modeling thermostat cycling or heat loss.
